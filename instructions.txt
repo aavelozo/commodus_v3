@@ -1,0 +1,7 @@
+android\app\build.gradle
+add this line to end of of file: 
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
+
+locais onde devem estar as fontes:
+app/src/main/assets/fonts
+src/views/assets/fonts
