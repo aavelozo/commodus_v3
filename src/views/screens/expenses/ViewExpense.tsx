@@ -86,7 +86,7 @@ function ViewExpense(props) : JSX.Element {
                                 </View>
                                 <Text style={{ fontWeight: 'bold', fontSize: RFValue(20), marginLeft: RFValue(15), color: DefaultStyles.colors.tabBar, marginTop: RFValue(10) }}>Detalhe dos gastos:</Text>
                                 <FlatList
-                                    ListFooterComponent={() => <View style={{ height: height * 0.09 }} />}
+                                    ListFooterComponent={() => <View style={{ height: height * 0.1 }} />}
                                     keyExtractor={expenses._id}
                                     data={expenses}
                                     renderItem={({ item }) => {
@@ -114,7 +114,7 @@ function ViewExpense(props) : JSX.Element {
                                         
                                         return (
                                             <View>
-                                                < View style={{ alignSelf: 'center', borderBottomWidth: 0.5, borderBottomColor: DefaultStyles.colors.tabBar, height: height * 0.06, marginTop: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
+                                                < View style={{ alignSelf: 'center', borderBottomWidth: RFValue(0.5), borderBottomColor: DefaultStyles.colors.tabBar, height: height * 0.06, marginTop: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
                                                     <Text style={style.textSummary}>{modelCars[ind]}</Text>
                                                     <Text style={[style.textSummary, { fontSize: RFValue(17), paddingBottom: RFValue(5) }]}>Total de gastos: R${vt.toFixed(2)}</Text>
                                                 </View>
@@ -192,10 +192,10 @@ const style = StyleSheet.create({
         color: DefaultStyles.colors.tabBar,
     },
     button: {
-        height: height * 0.082,
-        width: height * 0.082,
+        height: height > 700 ? RFValue(height * 0.082) : RFValue(height * 0.099),
+        width: height > 700 ? RFValue(height * 0.082) : RFValue(height * 0.099),
         backgroundColor: DefaultStyles.colors.tabBar,
-        borderRadius: height * 0.082 / 2,
+        borderRadius: height > 700 ? RFValue(height * 0.082 / 2) : RFValue(height * 0.099 / 2),
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',

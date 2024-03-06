@@ -106,7 +106,6 @@ function ViewVehicle(props: React.PropsWithChildren): JSX.Element {
                                 navigator.navigate('EditVehicle', { vehicle: vehicle });
                             }}
                         >
-                            {/* <EvilIcons name='edit' size={RFValue(35)} color={DefaultStyles.colors.botao} /> */}
                             <Edit width={RFValue(50)} height={RFValue(50)} />
                         </TouchableOpacity>
                     </View>

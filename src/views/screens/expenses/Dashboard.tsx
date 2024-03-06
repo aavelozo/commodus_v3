@@ -22,49 +22,47 @@ import { DefaultStyles } from '../../DefaultStyles'
 const { height, width } = Dimensions.get('window')
 
 function Dashboard(props): JSX.Element {
-    // const [expenses, setExpenses] = useState([])
-    // const [cars, setCars] = useState(0)
-    // const [modelCars, setModelCars] = useState(0)
     const [expensesByCars, setExpensesByCar] = useState([])
     const [expensesByMonth, setExpensesByMonth] = useState([])
     const [expensesByMonthBefore, setExpensesByMonthBefore] = useState([])
     const [expensesByMonthWithDate, setExpensesByMonthWithDate] = useState([])
-    const [showLoading, setShowLoading] = useState(true)
     const [months, setMonths] = useState([])
-    // const showLoading = useRef(false)
     const [changeOil, setChangeOil] = useState([])
     const indexDateFlatlist = useRef(0)
-    // const dataAtual = moment(new Date()).format("MM/YY")
     const [date, setDate] = useState(moment(new Date()).format("MM/YY"))
     const realm = useRealm();
-
-
     const anoatual = moment(new Date()).format("YY")
 
-    // ["#04FFF0", "#F4FF00","#007C76","#FC6B1C", "#FF0404", "#04FF2C", "#DC04FF"]
 
-    const dados = [{ text: 'jan/23', id: '01/23' }, { text: 'fev/23', id: '02/23' }, { text: 'mar/23', id: '03/23' }, { text: 'abr/23', id: '04/23' }, { text: 'mai/23', id: '05/23' }, { text: 'jun/23', id: '06/23' }, { text: 'jul/23', id: '07/23' }, { text: 'ago/23', id: '08/23' }, { text: 'set/23', id: '09/23' }, { text: 'out/23', id: '10/23' }, { text: 'nov/23', id: '11/23' }, { text: 'dez/23', id: '12/23' }, { text: 'jan/24', id: '01/24' }, { text: 'fev/24', id: '02/24' }]
+    const montaMeses = (inicio: String) => {
+        const mesesNomes = [
+            "jan", "fev", "mar", "abr", "mai", "jun",
+            "jul", "ago", "set", "out", "nov", "dez"
+        ];
+        let parte = inicio.split('/')
+        const quantidade = Number(anoatual) - parte[1] + 36
 
-
-    const mesesAbreviados = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
-    
-
-    const montaMeses = (anoInicio, quantidadeAnos, mesesAbreviados) => {
-        var meses = []
-        var anoAtual = anoInicio
-        for (var i = Number(anoInicio); i <= Number(anoInicio) + quantidadeAnos; i++) {
-
-            if (i > anoInicio) anoAtual = Number(anoAtual) + 1
-            for (var ind = 0; ind < mesesAbreviados.length; ind++) {
-                var numeroMes = ind + 1
-                if (ind == 0) {
-                    meses.push({ text: `${mesesAbreviados[ind]}/${anoAtual}`, id: `0${numeroMes}/${anoAtual}` })
-                } else {
-                    meses.push({ text: `${mesesAbreviados[ind]}/${anoAtual}`, id: `${ind < 9 ? '0' + (ind + 1) : (ind + 1)}/${anoAtual}` })
-                }
+        let meses = []
+        for (let i = 0; i < quantidade; i++) {
+            let [mes, ano] = inicio.split('/')
+            mes = parseInt(mes)
+            ano = parseInt(ano)
+            let mesStr = mesesNomes[mes - 1]
+            let texto = mesStr + '/' + ano;
+            let id = mes.toString().padStart(2, '0') + '/' + ano;
+            meses.push({ "id": id, "text": texto })
+            if (date == id) {
+                indexDateFlatlist.current = i
             }
-        }       
+            mes++
+            if (mes > 12) {
+                mes = 1
+                ano++
+            }
+            inicio = mes.toString().padStart(2, '0') + '/' + ano
+        }
         setMonths(meses)
+        return meses
     }
 
     const getExpensesThisUser = async () => {
@@ -84,8 +82,6 @@ function Dashboard(props): JSX.Element {
 
     useEffect(() => {
 
-        console.log('começo useEffect')
-        setShowLoading(true)
         async function getExpenses() {
 
 
@@ -94,7 +90,7 @@ function Dashboard(props): JSX.Element {
             var arrdespesasmesanterior = []
             var arrdespesasdatacompleta = []
             var proximatroca = []
-            montaMeses(2022, 5, mesesAbreviados)
+            montaMeses("01/23")
             desp.map((d, ind) => {
                 if (d.othersdatas.reminderKM != null) {
                     proximatroca.push(d.othersdatas.reminderKM)
@@ -132,19 +128,12 @@ function Dashboard(props): JSX.Element {
 
         }
         getExpenses()
-        setTimeout(() => {
-            setShowLoading(false)
-        }, 300)
-        console.log(showLoading)
-
-        console.log('fim useEffect')
 
 
     }, [date])
 
 
     useFocusEffect(useCallback(() => {
-        indexDateFlatlist.current = dados.map(dado => dado.id).indexOf(date)
 
         async function getExpenses() {
 
@@ -178,6 +167,14 @@ function Dashboard(props): JSX.Element {
         getExpenses()
     }, []))
 
+    const getItemLayout = (data, index) => {
+        return {
+          length: 50,
+          offset: 50 * data.length,
+          index,
+        };
+      };
+
 
     return (
         <>
@@ -188,21 +185,16 @@ function Dashboard(props): JSX.Element {
 
                     <FlatList
                         horizontal={true}
-                        data={dados}
+                        data={months}
                         keyExtractor={item => item.id}
-                        initialScrollIndex={indexDateFlatlist.current - 1}
-                        onScrollToIndexFailed={info => {
-                            const wait = new Promise(resolve => setTimeout(resolve, 500));
-                            wait.then(() => {
-                                //   flatList.current?.scrollToIndex({ index: info.index, animated: true });
-                            });
-                        }}
+                        showsHorizontalScrollIndicator={false}
+                        // initialScrollIndex={months.length - 2}
+                        // getItemLayout={getItemLayout}
                         renderItem={({ item }) => {
                             const actualDate = { borderBottomWidth: 2, borderColor: '#fff' }
                             return (
                                 <View style={{ width: width * 0.4, alignItems: 'center', justifyContent: 'center' }}>
                                     <TouchableWithoutFeedback onPress={() => {
-                                        setShowLoading(true)
                                         setDate(item.id)
                                     }}>
                                         <Text style={[date == item.id ? actualDate : false, { color: '#fff' }]}>{item.text}</Text>
@@ -212,18 +204,15 @@ function Dashboard(props): JSX.Element {
                         }}
                     />
                 </View>
-                <Modal
+                {/* <Modal
                     animationType="none"
                     transparent={true}
-                    visible={showLoading}
-                // onRequestClose={() => {
-                //     setShowLoading(!showLoading);
-                // }}
+                    visible={loagingRef.current}
                 >
                     <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
                         <ActivityIndicator size="large" color={DefaultStyles.colors.tabBar} />
                     </View>
-                </Modal>
+                </Modal> */}
 
                 <View style={style.espacoCentral}>
 
@@ -329,12 +318,12 @@ function Dashboard(props): JSX.Element {
                                                 gastoDocumentos += exp.totalValue
                                             } else if (exp.type == 'RUBBER') {
                                                 gastoBorracharia += exp.totalValue
-                                            } else if (exp.type == 'APPEARENCE') {
+                                            } else if (exp.type == 'APPEARANCE') {
                                                 gastoAparencia += exp.totalValue
                                             } else if (exp.type == 'OTHERS') {
                                                 gastoOutros += exp.totalValue
                                             } else {
-                                                console.log('erro')
+                                                console.log('erro'+ exp.type)
                                             }
                                             gastodomes += exp.totalValue
                                         }
@@ -382,16 +371,12 @@ function Dashboard(props): JSX.Element {
                                         x: `31/${date.slice(0, 2)}`, y: totalizador31 + totalizador25 + totalizador20 + totalizador15 + totalizador10 + totalizador05 + totalizador01
                                     })
 
-
-
-
-                                    // arrDespesas.push({ x: 'Combustível', y: gastoCombustivel, color: "#04FF2C" }, { x: 'Óleo', y: gastoOleo, color: "#FF0404" }, { x: 'Documento', y: gastoDocumentos, color: "#F4FF00" }, { x: 'Mecânica', y: gastoMecanica, color: "#DC04FF" }, { x: 'Aparência', y: gastoAparencia, color: "#04FFF0" }, { x: 'Outros', y: gastoOutros, color: "#007C76" }, { x: 'Borracharia', y: gastoBorracharia, color: "#0f2054" })
-                                    arrDespesas.push({ x: 'Combustível', y: gastoCombustivel, color: "#FFA3A5" }, { x: 'Óleo', y: gastoOleo, color: "#B8DBF2" }, { x: 'Documento', y: gastoDocumentos, color: "#9BC995" }, { x: 'Mecânica', y: gastoMecanica, color: "#FFD38E" }, { x: 'Aparência', y: gastoAparencia, color: "#D0A9F5" }, { x: 'Outros', y: gastoOutros, color: "#e9f143" }, { x: 'Borracharia', y: gastoBorracharia, color: "#F8B6D3" })
+                                    arrDespesas.push({ x: 'Combustível', y: gastoCombustivel, color: "#f47476" }, { x: 'Óleo', y: gastoOleo, color: "#B8DBF2" }, { x: 'Documento', y: gastoDocumentos, color: "#9BC995" }, { x: 'Mecânica', y: gastoMecanica, color: "#FFD38E" }, { x: 'Aparência', y: gastoAparencia, color: "#D0A9F5" }, { x: 'Outros', y: gastoOutros, color: "#e9f143" }, { x: 'Borracharia', y: gastoBorracharia, color: "#F8B6D3" })
 
                                     return (
 
                                         <View key={car.model}>
-                                            < View style={{ alignSelf: 'center', borderBottomWidth: 0.5, borderBottomColor: DefaultStyles.colors.tabBar, height: height * 0.06, justifyContent: 'center', alignItems: 'center' }}>
+                                            < View style={{ alignSelf: 'center', borderBottomWidth: RFValue(0.5), borderBottomColor: DefaultStyles.colors.tabBar, height: height * 0.06, justifyContent: 'center', alignItems: 'center' }}>
                                                 <Text style={style.textSummary}>{car.model}</Text>
                                                 <Text style={[style.textSummary, { fontSize: RFValue(16), paddingBottom: RFValue(5) }]}>Gastos do mês: R${gastodomes.toFixed(2)}</Text>
 
@@ -403,7 +388,7 @@ function Dashboard(props): JSX.Element {
                                                     <Text style={{ fontSize: RFValue(17), color: DefaultStyles.colors.tabBar, }}>{car.carro.km}</Text>
                                                 </View>
                                                 <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center', }}>
-                                                    <Media width={RFValue(25)} height={RFValue(45)} fill={DefaultStyles.colors.tabBar} />
+                                                    <Media width={RFValue(25)} height={RFValue(25)} fill={DefaultStyles.colors.tabBar} />
                                                     <Text style={{ fontWeight: 'bold', fontSize: RFValue(17), marginLeft: RFValue(5), color: DefaultStyles.colors.tabBar, }}>Média: </Text>
                                                     <Text style={{ fontSize: RFValue(17), color: DefaultStyles.colors.tabBar, }}>10km / litro</Text>
                                                 </View>
@@ -472,7 +457,6 @@ function Dashboard(props): JSX.Element {
                                                     : false
                                                 }
 
-
                                                 {/* grafico de linha n°2 - fluxo de caixa*/}
                                                 {
                                                     gastodomes > 0 ?
@@ -504,14 +488,13 @@ function Dashboard(props): JSX.Element {
                                                                 />
                                                                 <VictoryAxis
                                                                     // tickFormat={total.name}
-                                                                    tickLabelComponent={<VictoryLabel angle={-30} textAnchor="end" style={{ fontSize: 8 }} />}
+                                                                    tickLabelComponent={<VictoryLabel angle={RFValue(-30)} textAnchor="end" style={{ fontSize: RFValue(8) }} />}
                                                                 />
 
                                                             </VictoryChart>
                                                         </View>
                                                         : false
                                                 }
-
 
                                                 {/* grafico de pizza n°3 - porcentagem dos gastos */}
                                                 {
@@ -603,6 +586,9 @@ function Dashboard(props): JSX.Element {
 
                                                 </View>
                                                 <View style={{ height: 100 }}></View>
+
+
+
                                             </ScrollView>
                                         </View>
                                     )

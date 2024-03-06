@@ -90,8 +90,6 @@ const style = StyleSheet.create({
         height: height > 700 ? RFValue(height * 0.082) : RFValue(height * 0.099),
         width: height > 700 ? RFValue(height * 0.082) : RFValue(height * 0.099),
         backgroundColor: DefaultStyles.colors.tabBar,
-        // borderColor: DefaultStyles.colors.tabBar,
-        // borderWidth: 5,
         borderRadius: height > 700 ? RFValue(height * 0.082 / 2) : RFValue(height * 0.099 / 2),
         justifyContent: 'center',
         alignItems: 'center',

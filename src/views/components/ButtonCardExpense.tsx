@@ -44,22 +44,22 @@ function ButtonCardExpense(props): JSX.Element {
                 <View style={[style.cardExpense]}>
                     <View style={style.icon}>
                         {item.type == 'FUEL' &&
-                            <Fuel width={50} height={50} fill={DefaultStyles.colors.tabBar} />
+                            <Fuel width={RFValue(40)} height={RFValue(40)} fill={DefaultStyles.colors.tabBar} />
                         }
                         {item.type == 'OIL' &&
-                            <Oil width={50} height={50} fill={DefaultStyles.colors.tabBar} />
+                            <Oil width={RFValue(40)} height={RFValue(40)} fill={DefaultStyles.colors.tabBar} />
                         }
                         {item.type == 'DOCUMENT' &&
-                            <Doc width={50} height={50} fill={DefaultStyles.colors.tabBar} />
+                            <Doc width={RFValue(40)} height={RFValue(40)} fill={DefaultStyles.colors.tabBar} />
                         }
                          {item.type == 'APPEARANCE' &&
-                            <Wash width={50} height={50} fill={DefaultStyles.colors.tabBar} />
+                            <Wash width={RFValue(40)} height={RFValue(40)} fill={DefaultStyles.colors.tabBar} />
                         }
                          {item.type == 'MECHANIC' &&
-                            <Mec width={45} height={45} fill={DefaultStyles.colors.tabBar} />
+                            <Mec width={RFValue(40)} height={RFValue(40)} fill={DefaultStyles.colors.tabBar} />
                         }
                     </View>
-                    <View style={{ justifyContent: 'center', paddingLeft: 10, width: '55%' }}>
+                    <View style={{ justifyContent: 'center', paddingLeft: RFValue(10), width: '55%' }}>
                         <Text style={style.textExpense}>{item.othersdatas.codOil || item.othersdatas.fuel || item.othersdatas.documentName
                         || item.othersdatas.regularWashing || item.othersdatas.completeWashing || item.othersdatas.service}</Text>
                         <Text style={style.textExpense}>{item.establishment}</Text>
@@ -79,7 +79,7 @@ function ButtonCardExpense(props): JSX.Element {
 
 const style = StyleSheet.create({
     cardExpense: {
-        height: Dimensions.get('window').height * 0.13,
+        height: Dimensions.get('window').height * 0.11,
         paddingHorizontal: RFValue(10),
         flexDirection: 'row',
         width: '100%'
