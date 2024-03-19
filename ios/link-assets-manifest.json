@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/views/assets/fonts/KronaOne-Regular.ttf",
+      "sha1": "f617c84dc2dba21f38139fb12c760bf8ccabcc62"
+    },
+    {
+      "path": "src/views/assets/fonts/verdana.ttf",
+      "sha1": "0919499ee7c5cbf6ec77d8d82f913df94962d415"
+    },
+    {
+      "path": "src/views/assets/fonts/verdanab.ttf",
+      "sha1": "612e869a6da8f879a67109ae4d78a0a41f266ff9"
+    }
+  ]
+}

@@ -135,12 +135,10 @@ function FuelExpense(props): JSX.Element {
         setSelectedFuel(selectedVehicle?.preferedFuel)
     }, [selectedVehicle])
 
-    //salva no banco, pressionado Concluir do Header aciona essa function
+ 
     function saveExpense(): void {
         try {
             if (totalValue && date && selectedVehicle && selectedFuel) {
-
-
                 if (typeof despesa != 'undefined' && despesa != null) {
                     realm.write(() => {
                         despesa.type = 'FUEL';

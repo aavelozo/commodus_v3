@@ -5,3 +5,12 @@ apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
 locais onde devem estar as fontes:
 app/src/main/assets/fonts
 src/views/assets/fonts
+
+na raiz do projeto criar arquio react-native.config.js, com essas informacoes:
+module.exports = {
+    project: {
+      ios: {},
+      android: {},
+    },
+    assets: ['./src/assets/fonts'],
+  };

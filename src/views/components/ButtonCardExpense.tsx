@@ -66,7 +66,7 @@ function ButtonCardExpense(props): JSX.Element {
                         <Text style={style.textExpense}>{item.linkingObjects('Vehicles', 'expenses')[0]?.linkingObjects('Models', 'vehicles')[0].model}</Text>
                     </View>
                     <View style={{ justifyContent: 'space-between', alignItems: 'flex-end', width: '30%', paddingVertical: 5 }}>
-                        <Text style={style.textExpense}> {moment(item.data).format("DD/MM/YY")}</Text>
+                        <Text style={style.textExpense}> {moment(item.date).format("DD/MM/YY")}</Text>
                         <Icon name="angle-right" size={30} color={DefaultStyles.colors.tabBar} />
                         <Text style={style.textExpense}>R${Number(item.totalValue).toFixed(2)}</Text>
                     </View>

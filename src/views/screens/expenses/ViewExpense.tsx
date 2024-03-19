@@ -14,7 +14,7 @@ import Header from '../../components/Header'
 import ButtonCardExpense from '../../components/ButtonCardExpense'
 const { height, width } = Dimensions.get('window');
 
-function ViewExpense(props) : JSX.Element {
+function ViewExpense(props): JSX.Element {
     const [allVehicle, setAllVehicle] = useState(true)
     const navigation = useNavigation()
     const [expenses, setExpenses] = useState([])
@@ -33,9 +33,8 @@ function ViewExpense(props) : JSX.Element {
                 vehicle.expenses.forEach(expenses => {
                     desp.push(expenses)
                 });
-             
+
             });
-   
             setExpenses(desp)
             try {
                 const array = await desp.map(d => d.totalValue)
@@ -60,93 +59,113 @@ function ViewExpense(props) : JSX.Element {
             <View style={style.title}>
                 <TitleView title="Despesa" />
                 <View style={style.espacoCentral}>
-                    <View style={{ flex: 1, paddingTop: RFValue(20) }}>
-                        {/* BOTão MOSTRAR TODAS DESPESAS OU VEICULO POR VEICULO */}
-                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
-                            <TouchableWithoutFeedback onPress={() => setAllVehicle(true)}>
-                                <View style={{ marginLeft: RFValue(10), borderBottomColor: allVehicle ? DefaultStyles.colors.botao : DefaultStyles.colors.tabBar, borderBottomWidth: allVehicle ? RFValue(4) : 1, width: '45%' }}>
-                                    <Text style={[style.textExpense, style.textButton]}>Todos os veículos</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
+                    {expenses.length > 0 ?
+                        <View style={{ flex: 1, paddingTop: RFValue(20) }}>
+                            {/* BOTão MOSTRAR TODAS DESPESAS OU VEICULO POR VEICULO */}
+                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center' }}>
+                                <TouchableWithoutFeedback onPress={() => setAllVehicle(true)}>
+                                    <View style={{ marginLeft: RFValue(10), borderBottomColor: allVehicle ? DefaultStyles.colors.botao : DefaultStyles.colors.tabBar, borderBottomWidth: allVehicle ? RFValue(4) : 1, width: '45%' }}>
+                                        <Text style={[style.textExpense, style.textButton]}>Todos os veículos</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
 
-                            <TouchableWithoutFeedback onPress={() => setAllVehicle(false)}>
-                                <View style={{ marginRight: 10, borderBottomColor: !allVehicle ? DefaultStyles.colors.botao : DefaultStyles.colors.tabBar, borderBottomWidth: !allVehicle ? RFValue(4) : 1, width: '45%' }}>
-                                    <Text style={[style.textExpense, style.textButton]}>Escolher o veículo</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>
+                                <TouchableWithoutFeedback onPress={() => setAllVehicle(false)}>
+                                    <View style={{ marginRight: 10, borderBottomColor: !allVehicle ? DefaultStyles.colors.botao : DefaultStyles.colors.tabBar, borderBottomWidth: !allVehicle ? RFValue(4) : 1, width: '45%' }}>
+                                        <Text style={[style.textExpense, style.textButton]}>Escolher o veículo</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
 
-                        {/* ALLVEHICLE = TRUE, MOSTRA TODAS AS DESPESAS, CASO CONTRARIO MOSTRA VEICULO POR VEICULO*/}
-                        {allVehicle ?
-                            <>
-                                {/* Todos os Veiculo */}
-                                < View style={{ alignSelf: 'center', height: height * 0.06, marginTop: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={style.textSummary}>{modelCars.length} veículo{modelCars.length > 1 ? 's' : ''}</Text>
-                                    <Text style={[style.textSummary, { fontSize: RFValue(18), paddingBottom: 2 }]}>Total de gastos: R${totalValue.toFixed(2)}</Text>
-                                </View>
-                                <Text style={{ fontWeight: 'bold', fontSize: RFValue(20), marginLeft: RFValue(15), color: DefaultStyles.colors.tabBar, marginTop: RFValue(10) }}>Detalhe dos gastos:</Text>
-                                <FlatList
-                                    ListFooterComponent={() => <View style={{ height: height * 0.1 }} />}
-                                    keyExtractor={expenses._id}
-                                    data={expenses}
-                                    renderItem={({ item }) => {
-                                        return (
-                                            <>
-                                                <ButtonCardExpense data={item} />
-                                            </>
-                                        )
-                                    }}
-                                />
-                            </> :
-                            <Swiper containerStyle={style.wrapper} loop={true} showsButtons={true} nextButton={<Text style={style.buttonTextRight}>›</Text>}
-                                prevButton={<Text style={style.buttonTextLeft}>‹</Text>} >
-                                {/* Escolher o Veiculo */}
-                                {
-                                    modelCars.map((model, ind) => {
-                                        // Vai mostrar a view do swiper por carro
+                            {/* ALLVEHICLE = TRUE, MOSTRA TODAS AS DESPESAS, CASO CONTRARIO MOSTRA VEICULO POR VEICULO*/}
+                            {allVehicle ?
+                                <>
+                                    {/* Todos os Veiculo */}
+                                    < View style={{ alignSelf: 'center', height: height * 0.06, marginTop: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={style.textSummary}>{modelCars.length} veículo{modelCars.length > 1 ? 's' : ''}</Text>
+                                        <Text style={[style.textSummary, { fontSize: RFValue(18), paddingBottom: 2 }]}>Total de gastos: R${totalValue.toFixed(2)}</Text>
+                                    </View>
+                                    <Text style={{ fontWeight: 'bold', fontSize: RFValue(20), marginLeft: RFValue(15), color: DefaultStyles.colors.tabBar, marginTop: RFValue(10) }}>Detalhe dos gastos:</Text>
+                                    <FlatList
+                                        ListFooterComponent={() => <View style={{ height: height * 0.1 }} />}
+                                        keyExtractor={expenses._id}
+                                        data={expenses}
+                                        renderItem={({ item }) => {
+                                            return (
+                                                <>
+                                                    <ButtonCardExpense data={item} />
+                                                </>
+                                            )
+                                        }}
+                                    />
+                                </> :
+                                <Swiper containerStyle={style.wrapper} loop={true} showsButtons={true} nextButton={<Text style={style.buttonTextRight}>›</Text>}
+                                    prevButton={<Text style={style.buttonTextLeft}>‹</Text>} >
+                                    {/* Escolher o Veiculo */}
+                                    {
+                                        modelCars.map((model, ind) => {
+                                            var totalValue = 0
+                                            expenses.map((exp, ind) => {
+                                                if (exp.linkingObjects('Vehicles', 'expenses')[0]?.linkingObjects('Models', 'vehicles')[0].model == model) {
+                                                    totalValue += exp.totalValue
+                                                }
+                                            })
 
-                                        var vt = 0
-                                        expenses.map((exp, ind) => {
-                                            if (exp.linkingObjects('Vehicles', 'expenses')[0]?.linkingObjects('Models', 'vehicles')[0].model == model) {
-                                                vt += exp.totalValue
-                                            }
-                                        })
-                                        
-                                        return (
-                                            <View>
-                                                < View style={{ alignSelf: 'center', borderBottomWidth: RFValue(0.5), borderBottomColor: DefaultStyles.colors.tabBar, height: height * 0.06, marginTop: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
-                                                    <Text style={style.textSummary}>{modelCars[ind]}</Text>
-                                                    <Text style={[style.textSummary, { fontSize: RFValue(17), paddingBottom: RFValue(5) }]}>Total de gastos: R${vt.toFixed(2)}</Text>
+                                            return (
+                                                <View key={ind}>
+                                                    < View style={{ alignSelf: 'center', borderBottomWidth: RFValue(0.5), borderBottomColor: DefaultStyles.colors.tabBar, height: height * 0.06, marginTop: RFValue(20), justifyContent: 'center', alignItems: 'center' }}>
+                                                        <Text style={style.textSummary}>{modelCars[ind]}</Text>
+                                                        <Text style={[style.textSummary, { fontSize: RFValue(17), paddingBottom: RFValue(5) }]}>Total de gastos: R${totalValue.toFixed(2)}</Text>
+                                                    </View>
+                                                    <Text style={{ fontWeight: 'bold', fontSize: RFValue(20), marginLeft: RFValue(15), color: DefaultStyles.colors.tabBar, marginTop: RFValue(10) }}>Detalhe dos gastos:</Text>
+                                                    <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: height * 0.12 }}>
+                                                        {
+                                                            expenses ? expenses.map((exp, ind) => {
+                                                                if (exp.linkingObjects('Vehicles', 'expenses')[0]?.linkingObjects('Models', 'vehicles')[0].model == model) {
+                                                                    return (
+                                                                        <View key={ind}>
+                                                                            <ButtonCardExpense data={exp}/>
+                                                                        </View>
+                                                                    )
+                                                                }
+                                                            }) : false
+                                                        }
+                                                        <View style={{ height: height * 0.12}} />
+                                                    </ScrollView>
+
                                                 </View>
-                                                <Text style={{ fontWeight: 'bold', fontSize: RFValue(20), marginLeft: RFValue(15), color: DefaultStyles.colors.tabBar, marginTop: RFValue(10) }}>Detalhe dos gastos:</Text>
-                                                <ScrollView showsVerticalScrollIndicator style={{ marginBottom: height * 0.12 }}>
-                                                    {
-                                                        expenses ? expenses.map((exp, ind) => {
-                                                            if (exp.linkingObjects('Vehicles', 'expenses')[0]?.linkingObjects('Models', 'vehicles')[0].model == model) {                                                                
-                                                                return (
-                                                                    <>
-                                                                        <ButtonCardExpense data={exp} />
-                                                                    </>
-                                                                )
-                                                            }
-                                                        }) : false
-                                                    }
-                                                </ScrollView>
-                                            </View>
-                                        )
-                                    })
-                                }
-                            </Swiper>
-                        }
+                                            )
+                                        })
+                                    }
+                                </Swiper>
+                            }
 
-                        {/* BOTÃO ACRESCENTAR DESPESA -> Abre modal velocimetro */}
-                        <View style={style.button} >
-                            <TouchableOpacity onPress={() => navigation.navigate('StackIncludeExpense')}>
-                                <Icon name='plus' size={RFValue(35)} color={DefaultStyles.colors.botao} />
-                            </TouchableOpacity>
+                            {/* BOTÃO ACRESCENTAR DESPESA -> Abre modal velocimetro */}
+                            <View style={style.button} >
+                                <TouchableOpacity onPress={() => navigation.navigate('StackIncludeExpense')}>
+                                    <Icon name='plus' size={RFValue(35)} color={DefaultStyles.colors.botao} />
+                                </TouchableOpacity>
+                            </View>
+
                         </View>
+                        :
 
-                    </View>
+
+                        <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center', width: '100%', paddingHorizontal: RFValue(30) }}>
+
+                            <Text style={style.info}>Não há despesa cadastrada. </Text>
+                            <View style={[style.info, { flexDirection: 'row' }]}>
+                                <Text style={style.info}>Clique</Text>
+                                <TouchableWithoutFeedback onPress={() => navigation.navigate('StackIncludeExpense')}>
+                                    <View>
+                                        <Text style={[style.info, { fontWeight: 'bold', color: 'blue' }]}> aqui </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <Text style={style.info}>para cadastrar</Text>
+                            </View>
+                            <Text style={style.info}>sua primeira despesa.</Text>
+                        </View>
+                    }
+
                 </View>
             </View >
         </>
@@ -225,6 +244,12 @@ const style = StyleSheet.create({
         width: width,
         height: RFValue(400),
         marginTop: RFValue(20)
+    },
+    info: {
+        fontFamily: 'verdana',
+        fontSize: RFValue(16),
+        textAlign: 'center',
+        color: '#000'
     }
 })
 
