@@ -13,6 +13,7 @@ import { TextInput } from 'react-native-paper'
 import { DefaultProps } from '../../DefaultProps'
 import { RFValue } from 'react-native-responsive-fontsize'
 import Utils from '../../../controllers/Utils'
+import Users from '../../../database/models/Users'
 
 const schema = yup.object({
     nomeCompleto: yup.string().required("Informe seu nome completo"),
@@ -68,7 +69,7 @@ function FormUser(props: React.PropsWithChildren): JSX.Element {
 
                     //local save
                     realm.write(() => {
-                        let novoUsuario = realm.create(Usuarios.name, {
+                        let novoUsuario = realm.create(Users.name, {
                             "name": data.nomeCompleto,
                             "mail": data.email,
                             "password": data.senha,
