@@ -12,6 +12,8 @@ import Usuarios from '../../../database/models/Users'
 import { TextInput } from 'react-native-paper'
 import { DefaultProps } from '../../DefaultProps'
 import { RFValue } from 'react-native-responsive-fontsize'
+import Utils from '../../../controllers/Utils'
+import Users from '../../../database/models/Users'
 
 const schema = yup.object({
     nomeCompleto: yup.string().required("Informe seu nome completo"),
@@ -28,33 +30,72 @@ function FormUser(props: React.PropsWithChildren): JSX.Element {
     })
 
 
-    const onSubmit = data => {
+    /**
+     * submited on user registration
+     * @param data 
+     * @returns 
+     * @updates 
+     *      - 2024-03-19 - implemented server user register request
+     */
+    async function onSubmit(data: any) {
+        try {
 
-        if (data.senha !== data.confirmeSenha) {
-            Alert.alert('Erro encontrado', 'Senhas divergentes')
-            return
-        }
-        Dados.user = data;
+            if (data.senha !== data.confirmeSenha) {
+                Alert.alert('Erro encontrado', 'Senhas divergentes')
+                return
+            }
+            Dados.user = data;
 
 
-        //salva no banco
-        realm.write(() => {
-            let novoUsuario = realm.create(Usuarios.name, {
-                "name": data.nomeCompleto,
-                "mail": data.email,
-                "password": data.senha,
-                "logged": false
-            });
-
-            props.navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: 'Login', params: data }]
+            //erver user register request
+            console.log('requesting to server');
+            let serverResponse = await fetch("http://68.183.105.44:3000/api/auth/register",{
+                method: "POST",
+                headers: {
+                    "Content-type":"application/json",
+                    accept:"application/json"
+                },
+                body:JSON.stringify({
+                    mail: data.email,
+                    password: data.senha,
+                    name: data.name                
                 })
-            );
-        });
+            });
+            console.log('requested to server', serverResponse.status);
+            if (serverResponse && serverResponse.status == 200){
+                serverResponse = await serverResponse.json();
+                if (serverResponse && Utils.toBool(serverResponse.success)) {
 
 
+                    //local save
+                    realm.write(() => {
+                        let novoUsuario = realm.create(Users.name, {
+                            "name": data.nomeCompleto,
+                            "mail": data.email,
+                            "password": data.senha,
+                            "logged": false
+                        });
+
+                        props.navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{ name: 'Login', params: data }]
+                            })
+                        );
+                    });
+
+
+                } else {
+                    Utils.showError(serverResponse.message || 'Erro ao se cadastrar');
+                }
+            } else {
+                serverResponse = await serverResponse.json();
+                Utils.showError(serverResponse.message || 'Erro ao se cadastrar');
+            }
+        } catch (e) {
+            console.log(e);
+            Utils.showError(e);
+        }
     }
 
     return (

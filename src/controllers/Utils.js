@@ -45,17 +45,60 @@ export default class Utils{
         Utils.log(`END  ${objName}.${methodName}`);
     }
 
-    static toNumber(value) {        
-        let result = null;
-        if (value != null) {
-            let tp = typeof value;
-            if (tp == "number") {
-                result = value;
-            } else if (tp == "string") {
-                result = value.replace(",",".") - 0;
+    static toNumber(v) {
+        let r = null;
+        try {
+            let t = typeof v;
+            if (t == 'number') {
+                r = v;
             } else {
-                console.log(value);
-                throw new Error("tipo nao esperado: " + tp);
+                if (t == 'boolean') {
+                    r = Number(v);  
+                } else if (t == 'string') {
+                    r = Number(v);
+                    if (isNaN(r)) {
+                        v = v.replace(/[^\d|\,|\.|\-|\+]+/ig,'');
+                        if (v.length > 0) { 
+                            let pc = v.indexOf(",");
+                            let pp = v.indexOf(".");
+                            if (pc > -1 && pp > -1) {
+                                if (pp > pc) {
+                                    r = Number(v.replaceAll(",",""));
+                                } else {
+                                    r = Number(v.replaceAll(".","").replace(",","."));
+                                }
+                            } else {
+                                if (pc > -1) {
+                                    r = Number(v.replace(",","."));
+                                } else {
+                                    r = Number(v);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch(e) {
+            Utils.showError(e);
+        }
+        return r;
+    }
+
+    static toBool(pValue) {
+        let result = false;
+        if (typeof pValue !== "undefined" && pValue != null) {
+            if (typeof pValue == "boolean") {
+                result = pValue;
+            } else if (typeof pValue == "string") {
+                if (pValue.trim() == "true") {
+                    result = true;
+                }
+            } else if (typeof pValue == "number") {
+                if (pValue != 0) {
+                    return true;
+                }
+            } else {
+                result = pValue?true:false;
             }
         }
         return result;
