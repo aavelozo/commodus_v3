@@ -45,7 +45,7 @@ function Header(props): JSX.Element {
                 {props.withButtons ?
                     <ButtonCancel onPress={() => props.onPressCancel()} /> :
                     !props.noBars ? <TouchableWithoutFeedback onPress={() => showModal()}>
-                        <Icon name="bars" size={30} color={DefaultStyles.colors.tabBar} style={{ marginLeft: RFValue(10) }} />
+                        <Icon name="bars" size={30} color={DefaultStyles.colors.tabBar} style={{ marginLeft: RFValue(10), marginBottom: RFValue(5) }} />
                     </TouchableWithoutFeedback> : false
                 }
 
@@ -69,12 +69,12 @@ function Header(props): JSX.Element {
                     <View style={{ flex: 4, backgroundColor: 'white', height: '100%', borderBottomRightRadius: RFValue(10), borderTopRightRadius: RFValue(10) }}>
                         <View style={{ backgroundColor: '#0E0D13', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
                             {
-                               user?.photo ?
+                                user?.photo ?
                                     <Image
                                         style={{ height: RFValue(100), width: RFValue(100), borderRadius: RFValue(50), borderWidth: 1, borderColor: '#F4F4F4' }}
-                                        resizeMode="cover"                                        
+                                        resizeMode="cover"
                                         source={{ uri: user.photo }}
-                                        
+
                                     /> : <Image
                                         style={{ height: RFValue(100), width: RFValue(100) }}
                                         resizeMode="contain"
@@ -89,7 +89,7 @@ function Header(props): JSX.Element {
                         <View style={{ backgroundColor: '#F4F4F4', height: '75%', borderRadius: RFValue(10), paddingTop: RFValue(10) }}>
 
                             <View style={style.optionNavigation}>
-                                <FeatherIcon name="pie-chart" size={RFValue(35)} color={DefaultStyles.colors.tabBar} />
+                                <FeatherIcon name="pie-chart" size={RFValue(30)} color={DefaultStyles.colors.tabBar} />
                                 <TouchableWithoutFeedback onPress={() => {
                                     hideModal()
                                     navigation.navigate('Dashboard')
@@ -99,7 +99,7 @@ function Header(props): JSX.Element {
                                 </TouchableWithoutFeedback>
                             </View>
                             <View style={style.optionNavigation}>
-                                <FeatherIcon name="file-text" size={RFValue(35)} color={DefaultStyles.colors.tabBar} />
+                                <FeatherIcon name="file-text" size={RFValue(30)} color={DefaultStyles.colors.tabBar} />
                                 <TouchableWithoutFeedback onPress={() => {
                                     hideModal()
                                     navigation.navigate('ViewExpense')
@@ -108,7 +108,7 @@ function Header(props): JSX.Element {
                                 </TouchableWithoutFeedback>
                             </View>
                             <View style={style.optionNavigation}>
-                                <Image source={require('../../views/assets/iconDespesa2.png')} style={{ height: RFValue(35), width: RFValue(35) }} />
+                                <Image source={require('../../views/assets/iconDespesa2.png')} style={{ height: RFValue(30), width: RFValue(30) }} />
                                 <TouchableWithoutFeedback onPress={() => {
                                     hideModal()
                                     navigation.navigate('StackIncludeExpense')
@@ -117,8 +117,8 @@ function Header(props): JSX.Element {
                                 </TouchableWithoutFeedback>
                             </View>
                             <View style={style.optionNavigation}>
-                                <Fontisto name="automobile" size={RFValue(35)} color={DefaultStyles.colors.tabBar} />
-                                {/* <Image source={require('../../views/assets/car.png')} style={{ height: RFValue(35), width: RFValue(35) }} /> */}
+                                <Fontisto name="automobile" size={RFValue(30)} color={DefaultStyles.colors.tabBar} />
+                                {/* <Image source={require('../../views/assets/car.png')} style={{ height: RFValue(30), width: RFValue(30) }} /> */}
                                 <TouchableWithoutFeedback onPress={() => {
                                     hideModal()
                                     navigation.navigate('StackVehicle')
@@ -127,7 +127,7 @@ function Header(props): JSX.Element {
                                 </TouchableWithoutFeedback>
                             </View>
                             <View style={style.optionNavigation}>
-                                <FeatherIcon name="user" size={RFValue(35)} color={DefaultStyles.colors.tabBar} />
+                                <FeatherIcon name="user" size={RFValue(30)} color={DefaultStyles.colors.tabBar} />
                                 <TouchableWithoutFeedback onPress={() => {
                                     hideModal()
                                     navigation.navigate('StackUser')
@@ -139,7 +139,7 @@ function Header(props): JSX.Element {
 
                                 <TouchableWithoutFeedback onPress={() => unloggingUser()}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <FeatherIcon name="log-out" size={RFValue(35)} color={DefaultStyles.colors.tabBar} />
+                                        <FeatherIcon name="log-out" size={RFValue(30)} color={DefaultStyles.colors.tabBar} />
                                         <Text adjustsFontSizeToFit style={style.textDrawer}>Sair</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
