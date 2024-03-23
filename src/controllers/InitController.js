@@ -33,8 +33,16 @@ class InitController{
                     }
                 } 
             } else {
-                nextRoute = {name:"UserRegistration"} 
+                //nextRoute = {name:"UserRegistration"} 
+                nextRoute = {
+                    name:"Login",
+                    params:{
+                        email:'', 
+                        senha:''
+                    }
+                }
             }
+            
         }
 
         navigation.dispatch(
