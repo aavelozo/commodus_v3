@@ -78,7 +78,7 @@ function Dashboard(props): JSX.Element {
 
     const getExpensesThisUser = async () => {
         var carros = []
-        const user = await realm.objects('Users').filtered('logged == true')        
+        const user = await realm.objects('Users').filtered('logged == true')
         user[0].vehicles.forEach(vehicle => {
             var despesas = []
             var completo = {}
@@ -255,6 +255,7 @@ function Dashboard(props): JSX.Element {
 
     useEffect(() => {
         async function getExpenses() {
+            setLoading(true)
             montaMeses("01/23")
             const cars = await getExpensesThisUser()
             console.log(cars)
@@ -269,9 +270,8 @@ function Dashboard(props): JSX.Element {
 
 
     useFocusEffect(useCallback(() => {
-        setLoading(true)
-
         async function getExpenses() {
+            setLoading(true)
             montaMeses("01/23")
             const cars = await getExpensesThisUser()
             getDataForGraph(cars[changeCar])

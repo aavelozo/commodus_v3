@@ -123,13 +123,13 @@ function ViewExpense(props): JSX.Element {
                                                                 if (exp.linkingObjects('Vehicles', 'expenses')[0]?.linkingObjects('Models', 'vehicles')[0].model == model) {
                                                                     return (
                                                                         <View key={ind}>
-                                                                            <ButtonCardExpense data={exp}/>
+                                                                            <ButtonCardExpense data={exp} />
                                                                         </View>
                                                                     )
                                                                 }
                                                             }) : false
                                                         }
-                                                        <View style={{ height: height * 0.12}} />
+                                                        <View style={{ height: height * 0.12 }} />
                                                     </ScrollView>
 
                                                 </View>
@@ -139,16 +139,10 @@ function ViewExpense(props): JSX.Element {
                                 </Swiper>
                             }
 
-                            {/* BOTÃO ACRESCENTAR DESPESA -> Abre modal velocimetro */}
-                            <View style={style.button} >
-                                <TouchableOpacity onPress={() => navigation.navigate('StackIncludeExpense')}>
-                                    <Icon name='plus' size={RFValue(35)} color={DefaultStyles.colors.botao} />
-                                </TouchableOpacity>
-                            </View>
+
 
                         </View>
                         :
-
 
                         <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center', width: '100%', paddingHorizontal: RFValue(30) }}>
 
@@ -162,9 +156,17 @@ function ViewExpense(props): JSX.Element {
                                 </TouchableWithoutFeedback>
                                 <Text style={style.info}>para cadastrar</Text>
                             </View>
-                            <Text style={style.info}>sua primeira despesa.</Text>
+                            <Text style={style.info}>sua primeira despesa</Text>
+                            <Text style={style.info}>ou no botão de adicionar.</Text>
                         </View>
                     }
+
+                    {/* BOTÃO ACRESCENTAR DESPESA -> Abre modal velocimetro */}
+                    <View style={style.button} >
+                        <TouchableOpacity onPress={() => navigation.navigate('StackIncludeExpense')}>
+                            <Icon name='plus' size={RFValue(35)} color={DefaultStyles.colors.botao} />
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
             </View >
